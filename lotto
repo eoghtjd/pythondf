@@ -1,0 +1,11 @@
+import random
+
+randomList = []
+for i in range(6):
+    target = random.randint(1, 45)
+    if target not in randomList:
+        randomList.append(target)
+    else:
+        continue
+
+print(randomList)

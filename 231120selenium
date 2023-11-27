@@ -1,0 +1,59 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+
+
+from time import sleep
+
+
+chrome_options = Options()
+chrome_options.add_experimental_option("detach", True)
+
+service = Service(executable_path=ChromeDriverManager().install())
+driver = webdriver.Chrome(service=service, options=chrome_options)
+
+driver.get("https://shopping.naver.com/home")
+
+current_height = driver.execute_script("return window.scrollY")
+
+from selenium.webdriver.common.keys import Keys
+
+
+word=driver.find_element(By.CSS_SELECTOR,'#gnb-gnb > div > div._combineHeader_inner_2Uy4J > button > span')
+word.click()
+sleep(1)
+word=driver.find_element(By.CSS_SELECTOR,'#input_text')
+
+word.send_keys('기프티콘')
+sleep(1)
+word.send_keys(Keys.ENTER)
+sleep(1)
+word=driver.find_element(By.CSS_SELECTOR,'html').send_keys(Keys.END)
+
+
+current_height = driver.execute_script("return window.scrollY")
+
+while True:
+    driver.find_element(By.CSS_SELECTOR, 'body').send_keys(Keys.END)
+    sleep(1)
+    
+    scrolled_height = driver.execute_script("return window.scrollY")
+    
+    if (current_height == scrolled_height):
+        break
+    
+    current_height = scrolled_height
+
+products = driver.find_elements(By.CSS_SELECTOR, '.product_list_item__b84TO')
+
+for product in products:
+    title = product.find_element(By.CSS_SELECTOR, '.product_info_tit__c5_pb').text
+    print(f"제목 {title}")
+    price = product.find_element(By.CSS_SELECTOR, '.product_num__iQsWh').text
+    print(f"가격 {price}")
+    # link = product.find_element(By.TAG_NAME, 'a').get_attribute('href')
+    link = product.find_element(By.XPATH, '//a[contains(text(), "상품 바로가기")]').get_attribute('href')
+    print(f"링크 {link}")

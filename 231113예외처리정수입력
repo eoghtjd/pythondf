@@ -1,0 +1,8 @@
+while True:
+    try: 
+      a=int(input('입력:'))
+      if type(a)==int:
+        print('성공')
+        break
+    except:
+     print('정수가 아님, 정수입력')

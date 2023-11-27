@@ -1,0 +1,7 @@
+print((lambda a,b:a+b)(1,2))
+a=[1,2]
+b=list(map(lambda a:str(2),a))
+
+for i,j in enumerate(a,start=30):
+    print(i,j)
+
